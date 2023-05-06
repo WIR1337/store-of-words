@@ -1,6 +1,5 @@
 <script lang="ts">
-    import main from '../main.js'
-    main()
+    import main from '../scripts/main.js'
 </script>
 
 <div>Wellcome back</div>
