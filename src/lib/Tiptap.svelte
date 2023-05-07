@@ -35,4 +35,4 @@
     </div>
   {/if}
 
-  <div bind:this={element}></div>
+  <div bind:this={element} id='tiptap'></div>
