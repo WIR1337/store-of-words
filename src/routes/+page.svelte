@@ -1,4 +1,6 @@
 <script lang="ts">
+import Tiptap from "../lib/Tiptap.svelte";
+
     let newSentence = ''
     
     let sentenceArr:string[] = []
@@ -10,8 +12,10 @@
 
 </script>
 
+<Tiptap></Tiptap>
+
+
 {#each sentenceArr as sentence}
     <div>{sentence}</div>
 {/each}
-<textarea bind:value={newSentence} class="border-2 border-blue-500" id="sentenceInput" cols="30" rows="5"></textarea>
 <button on:click={saveSentence} class="border border-black">Add</button>
