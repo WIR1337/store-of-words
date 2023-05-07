@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import "./styles.scss";
   
     import StarterKit from "@tiptap/starter-kit";
@@ -25,7 +25,7 @@
     <div>
       <div>
         <button
-          on:click={() => console.log && editor.chain().focus().toggleBold().run()}
+          on:click={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
           class={editor.isActive("bold") ? "is-active" : ""}
         >
@@ -34,4 +34,5 @@
       </div>
     </div>
   {/if}
-  <div bind:this={element} />
+
+  <div bind:this={element}></div>
