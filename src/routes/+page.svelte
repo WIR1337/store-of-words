@@ -106,24 +106,24 @@
 			month,
 			day
 		};
-		collection.numberOfRepeat = 3
+		collection.numberOfRepeat = 3;
 		// id ? remove or ?
 
 		if (supposedNextDate > MaxDays) {
-			let difference = supposedNextDate - MaxDays
-			
-			month = month + 1
-			if (month == 13) {
-				year += 1
-				month = 1
+			let difference = supposedNextDate - MaxDays;
+
+			collection.dateOfRepeat.month = month + 1;
+			if (collection.dateOfRepeat.month == 13) {
+				collection.dateOfRepeat.year += 1;
+				collection.dateOfRepeat.month = 1;
 			}
-			day = difference
-
+			collection.dateOfRepeat.day = difference;
 		} else {
-			day = supposedNextDate
+			collection.dateOfRepeat.day = supposedNextDate;
 		}
-
-		return collection
+		console.log(collection.dateOfRepeat);
+		
+		return collection;
 	}
 	function moveAll() {
 		let first = seven_days_collection[0];
@@ -147,12 +147,34 @@
 		seven_days_collection[5] = fifth;
 		seven_days_collection[6] = sixth;
 
-		repeatAfterWeak.push(createDate_7(seventh));
+		if (seventh.sentences.length != 0) {
+			repeatAfterWeak.push(createDate_7(seventh));
+			repeatAfterWeak = repeatAfterWeak;
+		}
 	}
 </script>
 
 <div class="flex gap-3">
 	{#each seven_days_collection as collection}
+		<div>
+			<div class="words-box">
+				{#each collection.sentences as sentence}
+					<div>{@html sentence}</div>
+				{/each}
+			</div>
+			<div class="flex justify-between">
+				<button on:click={() => increasRepeatCount(collection.id)}>Ok</button>
+				<div>{collection.count}/{collection.numberOfRepeat}</div>
+			</div>
+		</div>
+	{/each}
+</div>
+
+<div>
+	{#each repeatAfterWeak as collection}
+		<div>
+			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
+		</div>
 		<div>
 			<div class="words-box">
 				{#each collection.sentences as sentence}
