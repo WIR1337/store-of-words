@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { seven_days_collection, repeatAfterWeak } from '../collections';
+	import type { Writable } from 'svelte/store';
+	import { seven_days_collection, repeatAfterWeak } from '../collections-store';
 
 	import Tiptap from '../lib/Tiptap.svelte';
 
@@ -29,9 +30,9 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcountRepeat(id: number, store) {
+	function increasRepeatcountRepeat(id: number, store:Writable<Array<DayCollection>>) {
 		store.update(col => {
-			let currentCollection = col.find((day) => day.id == id);
+			let currentCollection = col.find((day:DayCollection) => day.id == id) as DayCollection; 
 			if (currentCollection?.countRepeat < currentCollection?.totalRepeat) {
 				currentCollection.countRepeat += 1;
 			}
@@ -39,7 +40,7 @@
 		});
 	}
 
-	function createDate_7(collection) {
+	function createDate_7(collection:DayCollection) {
 		const DATE = new Date();
 
 		let year = DATE.getFullYear();
@@ -116,6 +117,7 @@
 		}
 	}
 
+	// Create different file ?
 	const DATE = new Date().toString().split(' ');
 
 	const YEAR = DATE[3];
@@ -144,7 +146,7 @@
 
 <div>
 	{#each $repeatAfterWeak as collection}
-		<div>{JSON.stringify(collection)}</div>
+		
 		<div>
 			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
 		</div>

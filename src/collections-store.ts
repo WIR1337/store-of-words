@@ -1,49 +1,49 @@
-import { writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
 
-let first_day = {
+let first_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 1,
 	totalRepeat: 2
 };
-let second_day = {
+let second_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 2,
 	totalRepeat: 2
 };
-let third_day = {
+let third_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 3,
 	totalRepeat: 2
 };
-let fourth_day = {
+let fourth_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 4,
 	totalRepeat: 2
 };
-let fifth_day = {
+let fifth_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 5,
 	totalRepeat: 2
 };
-let sixth_day = {
+let sixth_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 6,
 	totalRepeat: 2
 };
-let seventh_day = {
+let seventh_day:DayCollection = {
 	sentences: [],
 	countRepeat: 0,
 	id: 7,
 	totalRepeat: 2
 };
 
-export let seven_days_collection = writable([
+export let seven_days_collection:Writable<Array<DayCollection>> = writable([
 	first_day,
 	second_day,
 	third_day,
@@ -53,4 +53,4 @@ export let seven_days_collection = writable([
 	seventh_day
 ]);
 
-export let repeatAfterWeak = writable([]);
+export let repeatAfterWeak:Writable<Array<DayCollection>>  = writable([]);
