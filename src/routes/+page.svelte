@@ -73,13 +73,13 @@
 
 		return collection;
 	}
-	function changeId(a,b,c,d,e,f) {
-		a.id = 2
-		b.id = 3
-		c.id = 4
-		d.id = 5
-		e.id = 6
-		f.id = 7
+	function changeId(a, b, c, d, e, f) {
+		a.id = 2;
+		b.id = 3;
+		c.id = 4;
+		d.id = 5;
+		e.id = 6;
+		f.id = 7;
 	}
 	function moveAll() {
 		let first = $seven_days_collection[0];
@@ -89,7 +89,7 @@
 		let fifth = $seven_days_collection[4];
 		let sixth = $seven_days_collection[5];
 		let seventh = $seven_days_collection[6];
-		changeId(first,second,third,fourth,fifth,sixth)
+		changeId(first, second, third, fourth, fifth, sixth);
 		seven_days_collection.update((col) => {
 			col[0] = {
 				sentences: [],
@@ -103,18 +103,27 @@
 			col[4] = fourth;
 			col[5] = fifth;
 			col[6] = sixth;
-			
+
 			return col;
 		});
 
 		if (seventh.sentences.length != 0) {
 			repeatAfterWeak.update((col) => {
-				col.push(createDate_7(seventh))
-				return col
+				col.push(createDate_7(seventh));
+				return col;
 			});
 		}
 	}
+
+	const DATE = new Date().toString().split(' ');
+
+	const YEAR = DATE[3];
+	const MONTH = DATE[1];
+	const DAY = DATE[2];
+	const NAME_OF_DAY = DATE[0]
 </script>
+
+<div>{NAME_OF_DAY} ,{DAY} {MONTH} {YEAR}</div>
 
 <div class="flex gap-3">
 	{#each $seven_days_collection as collection}
