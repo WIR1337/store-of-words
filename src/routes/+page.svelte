@@ -73,6 +73,14 @@
 
 		return collection;
 	}
+	function changeId(a,b,c,d,e,f) {
+		a.id = 2
+		b.id = 3
+		c.id = 4
+		d.id = 5
+		e.id = 6
+		f.id = 7
+	}
 	function moveAll() {
 		let first = $seven_days_collection[0];
 		let second = $seven_days_collection[1];
@@ -81,7 +89,7 @@
 		let fifth = $seven_days_collection[4];
 		let sixth = $seven_days_collection[5];
 		let seventh = $seven_days_collection[6];
-
+		changeId(first,second,third,fourth,fifth,sixth)
 		seven_days_collection.update((col) => {
 			col[0] = {
 				sentences: [],
@@ -95,7 +103,7 @@
 			col[4] = fourth;
 			col[5] = fifth;
 			col[6] = sixth;
-
+			
 			return col;
 		});
 
