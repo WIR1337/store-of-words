@@ -29,10 +29,10 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcountRepeat(id: number) {
-		seven_days_collection.update((col) => {
+	function increasRepeatcountRepeat(id: number, store) {
+		store.update(col => {
 			let currentCollection = col.find((day) => day.id == id);
-			if (currentCollection?.countRepeat < 2) {
+			if (currentCollection?.countRepeat < currentCollection?.totalRepeat) {
 				currentCollection.countRepeat += 1;
 			}
 			return col;
@@ -56,6 +56,7 @@
 			day
 		};
 		collection.totalRepeat = 3;
+		collection.countRepeat = 0;
 		// id ? remove or ?
 
 		if (supposedNextDate > MaxDays) {
@@ -134,7 +135,7 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcountRepeat(collection.id)}>Ok</button>
+				<button on:click={() => increasRepeatcountRepeat(collection.id, seven_days_collection)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
@@ -143,6 +144,7 @@
 
 <div>
 	{#each $repeatAfterWeak as collection}
+		<div>{JSON.stringify(collection)}</div>
 		<div>
 			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
 		</div>
@@ -153,7 +155,7 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcountRepeat(collection.id)}>Ok</button>
+				<button on:click={() => increasRepeatcountRepeat(collection.id,repeatAfterWeak)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
