@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { Writable } from 'svelte/store';
 	import { seven_days_collection, repeatAfterWeak } from '../collections-store';
+	import createDate from '../scripts/currentDate'
 
 	import Tiptap from '../lib/Tiptap.svelte';
+
+
+	const TODAY_IS = createDate()
 
 	function checkValidity(newInput: string): boolean {
 		let nullTrigger = newInput.includes('<br class="ProseMirror-trailingBreak">');
@@ -75,6 +79,7 @@
 
 		return collection;
 	}
+	// rework function ? types...
 	function changeId(a, b, c, d, e, f) {
 		a.id = 2;
 		b.id = 3;
@@ -117,16 +122,9 @@
 		}
 	}
 
-	// Create different file ?
-	const DATE = new Date().toString().split(' ');
-
-	const YEAR = DATE[3];
-	const MONTH = DATE[1];
-	const DAY = DATE[2];
-	const NAME_OF_DAY = DATE[0]
 </script>
 
-<div>{NAME_OF_DAY} ,{DAY} {MONTH} {YEAR}</div>
+<div>{TODAY_IS}</div>
 
 <div class="flex gap-3">
 	{#each $seven_days_collection as collection}

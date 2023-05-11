@@ -5,3 +5,4 @@
     - add bold text editor
 2. Add logick for schafle boxes
     - create function allMove [+]
+    - add types [+]
