@@ -8,6 +8,7 @@
 
 	const TODAY_IS = createDate()
 
+
 	function checkValidity(newInput: string): boolean {
 		let nullTrigger = newInput.includes('<br class="ProseMirror-trailingBreak">');
 		let whiteSpaceTrigger = newInput.trim() ? false : true;
@@ -43,50 +44,50 @@
 			return col;
 		});
 	}
+	function createDate_7(collection:DayCollection):SevenDayCollection {
+		// look's like shit. Rework , read docs ts 
+		let newCol = collection as SevenDayCollection
 
-	function createDate_7(collection:DayCollection) {
 		const DATE = new Date();
 
 		let year = DATE.getFullYear();
 		let month = DATE.getMonth() + 1;
 		let day = DATE.getDate();
 
-		const MaxDays = new Date(year, month, 0).getDate();
+		const MaxDaysInMonth = new Date(year, month, 0).getDate();
 
 		let supposedNextDate = day + 7;
 
-		collection.dateOfRepeat = {
+		newCol.dateOfRepeat = {
 			year,
 			month,
 			day
 		};
-		collection.totalRepeat = 3;
-		collection.countRepeat = 0;
+		newCol.totalRepeat = 3;
+		newCol.countRepeat = 0;
+		newCol.typeOfRepeat = 7
 		// id ? remove or ?
 
-		if (supposedNextDate > MaxDays) {
-			let difference = supposedNextDate - MaxDays;
+		if (supposedNextDate > MaxDaysInMonth) {
+			let difference = supposedNextDate - MaxDaysInMonth;
 
-			collection.dateOfRepeat.month = month + 1;
-			if (collection.dateOfRepeat.month == 13) {
-				collection.dateOfRepeat.year += 1;
-				collection.dateOfRepeat.month = 1;
+			newCol.dateOfRepeat.month = month + 1;
+			if (newCol.dateOfRepeat.month == 13) {
+				newCol.dateOfRepeat.year += 1;
+				newCol.dateOfRepeat.month = 1;
 			}
-			collection.dateOfRepeat.day = difference;
+			newCol.dateOfRepeat.day = difference;
 		} else {
-			collection.dateOfRepeat.day = supposedNextDate;
+			newCol.dateOfRepeat.day = supposedNextDate;
 		}
 
-		return collection;
+		return newCol;
 	}
-	// rework function ? types...
-	function changeId(a, b, c, d, e, f) {
-		a.id = 2;
-		b.id = 3;
-		c.id = 4;
-		d.id = 5;
-		e.id = 6;
-		f.id = 7;
+	function changeId(Collections:Array<DayCollection>) {
+		for (let index = 0; index < Collections.length; index++) {
+			Collections[index].id = index + 2 
+		}
+		
 	}
 	function moveAll() {
 		let first = $seven_days_collection[0];
@@ -96,7 +97,9 @@
 		let fifth = $seven_days_collection[4];
 		let sixth = $seven_days_collection[5];
 		let seventh = $seven_days_collection[6];
-		changeId(first, second, third, fourth, fifth, sixth);
+
+		changeId([first, second, third, fourth, fifth, sixth]);
+
 		seven_days_collection.update((col) => {
 			col[0] = {
 				sentences: [],

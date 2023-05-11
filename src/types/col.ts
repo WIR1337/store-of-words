@@ -1,5 +1,7 @@
 type Repeats = 2 | 3
 
+
+
 interface DateRepeat {
     year:  number,
     month:  number,
@@ -11,5 +13,14 @@ interface DayCollection {
 	countRepeat: number,
 	id: number,
 	totalRepeat: Repeats
-    dateOfRepeat?: DateRepeat
+    // dateOfRepeat?: DateRepeat
+}
+
+interface SevenDayCollection {
+    sentences: string[],
+	countRepeat: number,
+	id: number,
+	totalRepeat: Repeats
+    dateOfRepeat: DateRepeat,
+    typeOfRepeat: 7
 }
