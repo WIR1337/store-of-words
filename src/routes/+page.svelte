@@ -121,7 +121,7 @@
 		} else {
 			collection.dateOfRepeat.day = supposedNextDate;
 		}
-		console.log(collection.dateOfRepeat);
+		
 		
 		return collection;
 	}
