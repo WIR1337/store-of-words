@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { seven_days_collection, repeatAfterWeak } from '../collections';
+
 	import Tiptap from '../lib/Tiptap.svelte';
 
 	function checkValidity(newInput: string): boolean {
@@ -19,76 +21,23 @@
 		const ResOfValidity = checkValidity(Paragraph_HTML);
 
 		if (ResOfValidity) {
-			seven_days_collection[0].sentences.push(Paragraph_HTML);
-			seven_days_collection[0].sentences = seven_days_collection[0].sentences;
-
+			seven_days_collection.update((col) => {
+				col[0].sentences.push(Paragraph_HTML);
+				return col;
+			});
 			document.querySelector('#tiptap > div > p')?.remove();
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatCount(id: number) {
-		let currentCollection = seven_days_collection.find((collection) => collection.id == id);
-
-		if (currentCollection?.count == 2) return;
-		currentCollection.count += 1;
-
-		seven_days_collection = seven_days_collection;
+	function increasRepeatcountRepeat(id: number) {
+		seven_days_collection.update((col) => {
+			let currentCollection = col.find((day) => day.id == id);
+			if (currentCollection?.countRepeat < 2) {
+				currentCollection.countRepeat += 1;
+			}
+			return col;
+		});
 	}
-
-	let first_day = {
-		sentences: [],
-		count: 0,
-		id: 1,
-		numberOfRepeat: 2
-	};
-	let second_day = {
-		sentences: [],
-		count: 0,
-		id: 2,
-		numberOfRepeat: 2
-	};
-	let third_day = {
-		sentences: [],
-		count: 0,
-		id: 3,
-		numberOfRepeat: 2
-	};
-	let fourth_day = {
-		sentences: [],
-		count: 0,
-		id: 4,
-		numberOfRepeat: 2
-	};
-	let fifth_day = {
-		sentences: [],
-		count: 0,
-		id: 5,
-		numberOfRepeat: 2
-	};
-	let sixth_day = {
-		sentences: [],
-		count: 0,
-		id: 6,
-		numberOfRepeat: 2
-	};
-	let seventh_day = {
-		sentences: [],
-		count: 0,
-		id: 7,
-		numberOfRepeat: 2
-	};
-
-	let seven_days_collection = [
-		first_day,
-		second_day,
-		third_day,
-		fourth_day,
-		fifth_day,
-		sixth_day,
-		seventh_day
-	];
-
-	let repeatAfterWeak = [];
 
 	function createDate_7(collection) {
 		const DATE = new Date();
@@ -106,7 +55,7 @@
 			month,
 			day
 		};
-		collection.numberOfRepeat = 3;
+		collection.totalRepeat = 3;
 		// id ? remove or ?
 
 		if (supposedNextDate > MaxDays) {
@@ -121,41 +70,46 @@
 		} else {
 			collection.dateOfRepeat.day = supposedNextDate;
 		}
-		
-		
+
 		return collection;
 	}
 	function moveAll() {
-		let first = seven_days_collection[0];
-		let second = seven_days_collection[1];
-		let third = seven_days_collection[2];
-		let fourth = seven_days_collection[3];
-		let fifth = seven_days_collection[4];
-		let sixth = seven_days_collection[5];
-		let seventh = seven_days_collection[6];
+		let first = $seven_days_collection[0];
+		let second = $seven_days_collection[1];
+		let third = $seven_days_collection[2];
+		let fourth = $seven_days_collection[3];
+		let fifth = $seven_days_collection[4];
+		let sixth = $seven_days_collection[5];
+		let seventh = $seven_days_collection[6];
 
-		seven_days_collection[0] = {
-			sentences: [],
-			count: 0,
-			id: 1,
-			numberOfRepeat: 2
-		};
-		seven_days_collection[1] = first;
-		seven_days_collection[2] = second;
-		seven_days_collection[3] = third;
-		seven_days_collection[4] = fourth;
-		seven_days_collection[5] = fifth;
-		seven_days_collection[6] = sixth;
+		seven_days_collection.update((col) => {
+			col[0] = {
+				sentences: [],
+				countRepeat: 0,
+				id: 1,
+				totalRepeat: 2
+			};
+			col[1] = first;
+			col[2] = second;
+			col[3] = third;
+			col[4] = fourth;
+			col[5] = fifth;
+			col[6] = sixth;
+
+			return col;
+		});
 
 		if (seventh.sentences.length != 0) {
-			repeatAfterWeak.push(createDate_7(seventh));
-			repeatAfterWeak = repeatAfterWeak;
+			repeatAfterWeak.update((col) => {
+				col.push(createDate_7(seventh))
+				return col
+			});
 		}
 	}
 </script>
 
 <div class="flex gap-3">
-	{#each seven_days_collection as collection}
+	{#each $seven_days_collection as collection}
 		<div>
 			<div class="words-box">
 				{#each collection.sentences as sentence}
@@ -163,15 +117,15 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatCount(collection.id)}>Ok</button>
-				<div>{collection.count}/{collection.numberOfRepeat}</div>
+				<button on:click={() => increasRepeatcountRepeat(collection.id)}>Ok</button>
+				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
 	{/each}
 </div>
 
 <div>
-	{#each repeatAfterWeak as collection}
+	{#each $repeatAfterWeak as collection}
 		<div>
 			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
 		</div>
@@ -182,8 +136,8 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatCount(collection.id)}>Ok</button>
-				<div>{collection.count}/{collection.numberOfRepeat}</div>
+				<button on:click={() => increasRepeatcountRepeat(collection.id)}>Ok</button>
+				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
 	{/each}
