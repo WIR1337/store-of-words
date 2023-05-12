@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 	import type { Writable } from 'svelte/store';
-	import { seven_days_collection, repeatAfterWeak } from '../collections-store';
+	import { seven_days_collection, repeatAfterWeak, repeatAfter2Weak } from '../collections-store';
 	import createDate from '../scripts/currentDate'
 	
 	import Tiptap from '../lib/Tiptap.svelte';
@@ -127,9 +127,49 @@
 		}
 	}
 	function move7Day(id:uuid){
-
+		let newCol = $repeatAfterWeak.find(collections => collections.id == id)
+		repeatAfterWeak.update(x => {
+			let newCol = x.filter(col => col.id != id)
+			return newCol
+		})
+		repeatAfter2Weak.update(col => {
+			col.push(create14Day(newCol))
+			return col
+		})
+		
 	}
-	function createDate_14() {}
+	function create14Day(collection:SevenDayCollection) {
+		const DATE = new Date();
+
+		let year = DATE.getFullYear();
+		let month = DATE.getMonth() + 1;
+		let day = DATE.getDate();
+
+		const MaxDaysInMonth = new Date(year, month, 0).getDate();
+
+		let supposedNextDate = day + 14;
+
+		collection.dateOfRepeat = {
+			year,
+			month,
+			day
+		};
+		collection.typeOfRepeat = 14
+
+		if (supposedNextDate > MaxDaysInMonth) {
+			let difference = supposedNextDate - MaxDaysInMonth;
+
+			collection.dateOfRepeat.month = month + 1;
+			if (collection.dateOfRepeat.month == 13) {
+				collection.dateOfRepeat.year += 1;
+				collection.dateOfRepeat.month = 1;
+			}
+			collection.dateOfRepeat.day = difference;
+		} else {
+			collection.dateOfRepeat.day = supposedNextDate;
+		}
+		return collection as FourteenDayCollection
+	}
 </script>
 
 <div>{TODAY_IS}</div>
@@ -153,7 +193,7 @@
 <button on:click={moveAll}>Move All</button>
 
 <button on:click={pushNewSentence}>Add</button>
-
+<div>7 DAYS</div>
 <div>
 	{#each $repeatAfterWeak as collection}
 		<div>
@@ -171,6 +211,25 @@
 			</div>
 		</div>
 		<button on:click={() => move7Day(collection.id)}>Repeat after 2 weeks</button>
+	{/each}
+</div>
+<div>14 DAYS</div>
+<div>
+	{#each $repeatAfter2Weak as collection}
+		<div>
+			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
+		</div>
+		<div>
+			<div class="words-box">
+				{#each collection.sentences as sentence}
+					<div>{@html sentence}</div>
+				{/each}
+			</div>
+			<div class="flex justify-between">
+				<button on:click={() => increasRepeatcount(collection.id,repeatAfterWeak)}>Ok</button>
+				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
+			</div>
+		</div>
 	{/each}
 </div>
 

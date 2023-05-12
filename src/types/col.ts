@@ -24,3 +24,11 @@ interface SevenDayCollection {
     dateOfRepeat: DateRepeat,
     typeOfRepeat: 7
 }
+interface FourteenDayCollection {
+    sentences: string[],
+	countRepeat: number,
+	id: string ,
+	totalRepeat: Repeats
+    dateOfRepeat: DateRepeat,
+    typeOfRepeat: 14
+}

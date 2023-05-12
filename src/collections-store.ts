@@ -54,3 +54,4 @@ export let seven_days_collection:Writable<Array<DayCollection>> = writable([
 ]);
 
 export let repeatAfterWeak:Writable<Array<SevenDayCollection>>  = writable([]);
+export let repeatAfter2Weak:Writable<Array<FourteenDayCollection>>  = writable([]);
