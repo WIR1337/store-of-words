@@ -36,7 +36,7 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcount(id: uuid | number, store:Writable<Array<DayCollection | SevenDayCollection>>) {
+	function increasRepeatcount(id: uuid | number, store:Writable<Array<DayCollection | SevenDayCollection | FourteenDayCollection>>) {
 		store.update(col => {
 			let currentCollection = col.find((day) => day.id == id) as DayCollection | SevenDayCollection; 
 			if (currentCollection?.countRepeat < currentCollection?.totalRepeat) {
@@ -44,6 +44,12 @@
 			}
 			return col;
 		});
+	}
+	function changeId(Collections:Array<DayCollection>) {
+		for (let index = 0; index < Collections.length; index++) {
+			Collections[index].id = index + 2 
+		}
+		
 	}
 	function createDate_7(collection:DayCollection):SevenDayCollection {
 		// look's like shit. Rework , read docs ts 
@@ -84,12 +90,6 @@
 		}
 
 		return newCol;
-	}
-	function changeId(Collections:Array<DayCollection>) {
-		for (let index = 0; index < Collections.length; index++) {
-			Collections[index].id = index + 2 
-		}
-		
 	}
 	function moveAll() {
 		let first = $seven_days_collection[0];
@@ -170,6 +170,8 @@
 		}
 		return collection as FourteenDayCollection
 	}
+
+
 </script>
 
 <div>{TODAY_IS}</div>
@@ -192,6 +194,7 @@
 
 <button on:click={moveAll}>Move All</button>
 
+<Tiptap />
 <button on:click={pushNewSentence}>Add</button>
 <div>7 DAYS</div>
 <div>
@@ -226,14 +229,13 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcount(collection.id,repeatAfterWeak)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id,repeatAfter2Weak)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
 	{/each}
 </div>
 
-<Tiptap />
 
 <style>
 	.words-box {
