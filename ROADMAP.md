@@ -6,3 +6,4 @@
 2. Add logick for schafle boxes
     - create function allMove [+]
     - add types [+]
+3. Add unique ID to boxes

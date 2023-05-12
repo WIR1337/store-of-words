@@ -1,5 +1,5 @@
 type Repeats = 2 | 3
-
+type uuid = string
 
 
 interface DateRepeat {
@@ -19,7 +19,7 @@ interface DayCollection {
 interface SevenDayCollection {
     sentences: string[],
 	countRepeat: number,
-	id: number,
+	id: string ,
 	totalRepeat: Repeats
     dateOfRepeat: DateRepeat,
     typeOfRepeat: 7

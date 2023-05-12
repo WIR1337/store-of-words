@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { v4 as uuidv4 } from 'uuid';
 	import type { Writable } from 'svelte/store';
 	import { seven_days_collection, repeatAfterWeak } from '../collections-store';
 	import createDate from '../scripts/currentDate'
-
+	
 	import Tiptap from '../lib/Tiptap.svelte';
 
 
@@ -35,9 +36,9 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcountRepeat(id: number, store:Writable<Array<DayCollection>>) {
+	function increasRepeatcount(id: uuid | number, store:Writable<Array<DayCollection | SevenDayCollection>>) {
 		store.update(col => {
-			let currentCollection = col.find((day:DayCollection) => day.id == id) as DayCollection; 
+			let currentCollection = col.find((day) => day.id == id) as DayCollection | SevenDayCollection; 
 			if (currentCollection?.countRepeat < currentCollection?.totalRepeat) {
 				currentCollection.countRepeat += 1;
 			}
@@ -66,6 +67,7 @@
 		newCol.totalRepeat = 3;
 		newCol.countRepeat = 0;
 		newCol.typeOfRepeat = 7
+		newCol.id = uuidv4()
 		// id ? remove or ?
 
 		if (supposedNextDate > MaxDaysInMonth) {
@@ -124,7 +126,10 @@
 			});
 		}
 	}
+	function move7Day(id:uuid){
 
+	}
+	function createDate_14() {}
 </script>
 
 <div>{TODAY_IS}</div>
@@ -138,16 +143,19 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcountRepeat(collection.id, seven_days_collection)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id, seven_days_collection)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
 	{/each}
 </div>
 
+<button on:click={moveAll}>Move All</button>
+
+<button on:click={pushNewSentence}>Add</button>
+
 <div>
 	{#each $repeatAfterWeak as collection}
-		
 		<div>
 			{collection.dateOfRepeat.day}/{collection.dateOfRepeat.month}/{collection.dateOfRepeat.year}
 		</div>
@@ -158,16 +166,14 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcountRepeat(collection.id,repeatAfterWeak)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id,repeatAfterWeak)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
+		<button on:click={() => move7Day(collection.id)}>Repeat after 2 weeks</button>
 	{/each}
 </div>
 
-<button on:click={moveAll}>Move All</button>
-
-<button on:click={pushNewSentence}>Add</button>
 <Tiptap />
 
 <style>
