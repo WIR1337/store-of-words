@@ -23,5 +23,9 @@ interface FourteenDayCollection extends DayCollection {
     dateOfRepeat: DateRepeat,
     typeOfRepeat: 14
 }
+interface FinischedRepeat {
+    sentences: string[],
+    id: ID,
+}
 
 type AnyCollection = DayCollection | SevenDayCollection | FourteenDayCollection

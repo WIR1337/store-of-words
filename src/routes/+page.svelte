@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 	import type { Writable } from 'svelte/store';
-	import { seven_days_collection, repeatAfterWeak, repeatAfter2Weak } from '../collections-store';
-	import createDate from '../scripts/currentDate'
-	
+	import {
+		seven_days_collection,
+		repeatAfterWeak,
+		repeatAfter2Weak,
+		finishedRepeats
+	} from '../collections-store';
+	import createDate from '../scripts/currentDate';
+
 	import Tiptap from '../lib/Tiptap.svelte';
 
-
-	const TODAY_IS = createDate()
-
+	const TODAY_IS = createDate();
 
 	function checkValidity(newInput: string): boolean {
 		let nullTrigger = newInput.includes('<br class="ProseMirror-trailingBreak">');
@@ -36,24 +39,23 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcount(id: ID, store:Writable<Array<AnyCollection>>) {
-		store.update(col => {
-			let currentCollection = <AnyCollection>col.find((day) => day.id == id) ; 
+	function increasRepeatcount(id: ID, store: Writable<Array<AnyCollection>>) {
+		store.update((col) => {
+			let currentCollection = <AnyCollection>col.find((day) => day.id == id);
 			if (currentCollection.countRepeat < currentCollection.totalRepeat) {
 				currentCollection.countRepeat += 1;
 			}
 			return col;
 		});
 	}
-	function changeId(Collections:Array<DayCollection>) {
+	function changeId(Collections: Array<DayCollection>) {
 		for (let index = 0; index < Collections.length; index++) {
-			Collections[index].id = index + 2 
+			Collections[index].id = index + 2;
 		}
-		
 	}
-	function createDate_7(collection:DayCollection):SevenDayCollection {
-		// look's like shit. Rework , read docs ts 
-		let newCol = collection as SevenDayCollection
+	function createDate_7(collection: DayCollection): SevenDayCollection {
+		// look's like shit. Rework , read docs ts
+		let newCol = collection as SevenDayCollection;
 
 		const DATE = new Date();
 
@@ -72,8 +74,8 @@
 		};
 		newCol.totalRepeat = 3;
 		newCol.countRepeat = 0;
-		newCol.typeOfRepeat = 7
-		newCol.id = uuidv4()
+		newCol.typeOfRepeat = 7;
+		newCol.id = uuidv4();
 
 		if (supposedNextDate > MaxDaysInMonth) {
 			let difference = supposedNextDate - MaxDaysInMonth;
@@ -125,20 +127,18 @@
 			});
 		}
 	}
-	function move7Day(id:ID){
-		let newCol = $repeatAfterWeak.find(collections => collections.id == id)
-		repeatAfterWeak.update(x => {
-			let newCol = x.filter(col => col.id != id)
-			return newCol
-		})
-		repeatAfter2Weak.update(col => {
-			col.push(create14Day(newCol))
-			return col
-		})
-		
+	function move7Day(id: ID) {
+		let newCol = $repeatAfterWeak.find((collections) => collections.id == id);
+		repeatAfterWeak.update((x) => {
+			let newCol = x.filter((col) => col.id != id);
+			return newCol;
+		});
+		repeatAfter2Weak.update((col) => {
+			col.push(create14Day(newCol));
+			return col;
+		});
 	}
-	function create14Day(collection:SevenDayCollection):FourteenDayCollection {
-
+	function create14Day(collection: SevenDayCollection): FourteenDayCollection {
 		const DATE = new Date();
 
 		let year = DATE.getFullYear();
@@ -154,7 +154,7 @@
 			month,
 			day
 		};
-		collection.typeOfRepeat = 14
+		collection.typeOfRepeat = 14;
 
 		if (supposedNextDate > MaxDaysInMonth) {
 			let difference = supposedNextDate - MaxDaysInMonth;
@@ -169,10 +169,25 @@
 			collection.dateOfRepeat.day = supposedNextDate;
 		}
 		// How solve this shit ?
-		return collection
+		return collection;
 	}
+	function finish(id: ID) {
+		const FinischedCol = <FourteenDayCollection>$repeatAfter2Weak.find((col) => col.id == id);
+		repeatAfter2Weak.update((col) => {
+			const newCol = col.filter((x) => x.id != id);
+			return newCol;
+		});
 
+		let qwe = {
+			sentences: FinischedCol.sentences,
+			id: FinischedCol.id
+		};
 
+		finishedRepeats.update((x) => {
+			x.push(qwe);
+			return x;
+		});
+	}
 </script>
 
 <div>{TODAY_IS}</div>
@@ -186,7 +201,8 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcount(collection.id, seven_days_collection)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id, seven_days_collection)}>Ok</button
+				>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
@@ -210,7 +226,7 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcount(collection.id,repeatAfterWeak)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id, repeatAfterWeak)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
@@ -230,13 +246,28 @@
 				{/each}
 			</div>
 			<div class="flex justify-between">
-				<button on:click={() => increasRepeatcount(collection.id,repeatAfter2Weak)}>Ok</button>
+				<button on:click={() => increasRepeatcount(collection.id, repeatAfter2Weak)}>Ok</button>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
 			</div>
 		</div>
+		<button on:click={() => finish(collection.id)}>Finish</button>
 	{/each}
 </div>
 
+<div>Finished</div>
+<div>
+	{#each $finishedRepeats as collection}
+		
+		<div>
+			<div class="words-box">
+				{#each collection.sentences as sentence}
+					<div>{@html sentence}</div>
+				{/each}
+			</div>
+		</div>
+		<!-- <button on:click={() => finish(collection.id)}>Finish</button> -->
+	{/each}
+</div>
 
 <style>
 	.words-box {
