@@ -36,10 +36,10 @@
 		}
 		// create false logic with interface error
 	}
-	function increasRepeatcount(id: uuid | number, store:Writable<Array<DayCollection | SevenDayCollection | FourteenDayCollection>>) {
+	function increasRepeatcount(id: ID, store:Writable<Array<AnyCollection>>) {
 		store.update(col => {
-			let currentCollection = col.find((day) => day.id == id) as DayCollection | SevenDayCollection; 
-			if (currentCollection?.countRepeat < currentCollection?.totalRepeat) {
+			let currentCollection = <AnyCollection>col.find((day) => day.id == id) ; 
+			if (currentCollection.countRepeat < currentCollection.totalRepeat) {
 				currentCollection.countRepeat += 1;
 			}
 			return col;
@@ -74,7 +74,6 @@
 		newCol.countRepeat = 0;
 		newCol.typeOfRepeat = 7
 		newCol.id = uuidv4()
-		// id ? remove or ?
 
 		if (supposedNextDate > MaxDaysInMonth) {
 			let difference = supposedNextDate - MaxDaysInMonth;
@@ -126,7 +125,7 @@
 			});
 		}
 	}
-	function move7Day(id:uuid){
+	function move7Day(id:ID){
 		let newCol = $repeatAfterWeak.find(collections => collections.id == id)
 		repeatAfterWeak.update(x => {
 			let newCol = x.filter(col => col.id != id)
@@ -138,7 +137,8 @@
 		})
 		
 	}
-	function create14Day(collection:SevenDayCollection) {
+	function create14Day(collection:SevenDayCollection):FourteenDayCollection {
+
 		const DATE = new Date();
 
 		let year = DATE.getFullYear();
@@ -168,7 +168,8 @@
 		} else {
 			collection.dateOfRepeat.day = supposedNextDate;
 		}
-		return collection as FourteenDayCollection
+		// How solve this shit ?
+		return collection
 	}
 
 
