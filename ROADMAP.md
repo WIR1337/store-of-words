@@ -7,4 +7,5 @@
     - create function allMove [+]
     - add types [+]
 3. Add unique ID to boxes [+]
-4. Create Basic template design
+4. Create Basic template design [-]
+5. Add DB 
