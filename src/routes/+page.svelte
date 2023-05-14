@@ -188,6 +188,22 @@
 			return x;
 		});
 	}
+
+	async function sendRequest(){
+		
+
+		const response = await fetch('http://localhost:5173/DBapi', {
+				method: 'POST',
+				body: JSON.stringify({ 'description': 'hello' }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			const { id } = await response.json();
+			console.log('ID : ', id);
+			
+	}
 </script>
 
 <div>{TODAY_IS}</div>
@@ -268,6 +284,12 @@
 		<!-- <button on:click={() => finish(collection.id)}>Finish</button> -->
 	{/each}
 </div>
+
+
+
+<button on:click={sendRequest}>
+	Test Fetch
+</button>
 
 <style>
 	.words-box {
