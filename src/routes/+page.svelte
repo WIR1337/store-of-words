@@ -190,8 +190,6 @@
 	}
 
 	async function sendRequest(){
-		
-
 		const response = await fetch('http://localhost:5173/DBapi', {
 				method: 'POST',
 				body: JSON.stringify({ 'description': 'hello' }),

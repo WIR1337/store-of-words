@@ -8,4 +8,4 @@
     - add types [+]
 3. Add unique ID to boxes [+]
 4. Create Basic template design [-]
-5. Add DB 
+5. Configurate DB [+]
