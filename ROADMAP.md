@@ -1,4 +1,3 @@
-# 7.05
 1. Create Basics features [+]
     - function for adding new text
     - collect new text in array
@@ -9,3 +8,4 @@
 3. Add unique ID to boxes [+]
 4. Create Basic template design [-]
 5. Configurate DB [+]
+6. Create Tables and charts
