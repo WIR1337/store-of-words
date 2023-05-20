@@ -1,11 +1,12 @@
 // @ts-nocheck
-import { Client } from 'pg';
+import { Client, Pool } from 'pg';
 import { PGPASSWORD, PGHOST, PGPORT, PGDATABASE, PGUSER } from '$env/static/private';
 
-export const client = new Client({
+
+export const pool = new Pool({
 	host: PGHOST,
-	port: PGPORT,
-	database: PGDATABASE,
 	user: PGUSER,
-	password: PGPASSWORD
-});
+	database: PGDATABASE,
+	password: PGPASSWORD,
+	port: PGPORT
+})
