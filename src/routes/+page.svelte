@@ -1,7 +1,7 @@
 <script lang="ts">
 	/** @type {import('./$types').PageServerLoad} */
 	export let data;
-	console.log(data.dick);
+	console.log(data);
 	
 	import { v4 as uuidv4 } from 'uuid';
 	import type { Writable } from 'svelte/store';

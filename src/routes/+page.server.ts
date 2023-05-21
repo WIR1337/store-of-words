@@ -1,12 +1,12 @@
-import * as database from '$lib/DB/database';
+import db from '$lib/DB/database';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-     database.pool.query('SELECT * FROM public.week',(err, result) => {
+     db.query('SELECT * FROM public.week',(err, result) => {
 		if (err) {
 		console.error('Error executing query', err.stack)
 		}
-        console.log(result.rows);
+        console.log(result.rows,'DICK');
 	  })
 
 
