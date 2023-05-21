@@ -1,4 +1,8 @@
 <script lang="ts">
+	/** @type {import('./$types').PageServerLoad} */
+	export let data;
+	console.log(data.dick);
+	
 	import { v4 as uuidv4 } from 'uuid';
 	import type { Writable } from 'svelte/store';
 	import {
@@ -189,35 +193,32 @@
 		});
 	}
 
-	async function sendRequest(){
+	async function sendRequest() {
 		const response = await fetch('http://localhost:5173/DBapi', {
-				method: 'POST',
-				body: JSON.stringify({ 'description': 'hello' }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			method: 'POST',
+			body: JSON.stringify({ description: 'hello' }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-			const { id } = await response.json();
-			console.log('ID : ', id);
-			
+		const { id } = await response.json();
+		console.log('ID : ', id);
 	}
-	async function save(id:ID) {
-		const Update_Sentences = $seven_days_collection.find(col => col.id == id)!.sentences
+	async function save(id: ID) {
+		const Update_Sentences = $seven_days_collection.find((col) => col.id == id)!.sentences;
 
 		const response = await fetch('http://localhost:5173/DBapi', {
-				method: 'POST',
-				body: JSON.stringify({'sentences': Update_Sentences , 'id': id}),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			method: 'POST',
+			body: JSON.stringify({ sentences: Update_Sentences, id: id }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-			const {res} = await response.json();
-			console.log(res);
-			
+		const { res } = await response.json();
+		console.log(res);
 	}
-
 </script>
 
 <div>{TODAY_IS}</div>
@@ -288,7 +289,6 @@
 <div>Finished</div>
 <div>
 	{#each $finishedRepeats as collection}
-		
 		<div>
 			<div class="words-box">
 				{#each collection.sentences as sentence}
@@ -300,11 +300,7 @@
 	{/each}
 </div>
 
-
-
-<button on:click={sendRequest}>
-	Test Fetch
-</button>
+<button on:click={sendRequest}> Test Fetch </button>
 
 <style>
 	.words-box {
