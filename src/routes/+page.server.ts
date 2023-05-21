@@ -1,17 +1,19 @@
 import db from '$lib/DB/database';
-
 /** @type {import('./$types').PageServerLoad} */
+
+async function selectFrom() {
+	try {
+		const res = await db.query(`SELECT * FROM public.week`);
+		return res.rows;
+	} catch (err) {
+		return err.stack;
+	}
+}
+
 export async function load({ params }) {
-     db.query('SELECT * FROM public.week',(err, result) => {
-		if (err) {
-		console.error('Error executing query', err.stack)
-		}
-        console.log(result.rows,'DICK');
-	  })
-
-
-    return {
-        // post: await db.getPost(params.slug)
-        qwe: 'qwe'
-    };
+	const res = await selectFrom();
+	return {
+		// post: await db.getPost(params.slug)
+		qwe: res
+	};
 }
