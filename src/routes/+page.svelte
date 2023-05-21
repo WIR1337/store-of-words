@@ -202,6 +202,22 @@
 			console.log('ID : ', id);
 			
 	}
+	async function save(id:ID) {
+		const Update_Sentences = $seven_days_collection.find(col => col.id == id)!.sentences
+
+		const response = await fetch('http://localhost:5173/DBapi', {
+				method: 'POST',
+				body: JSON.stringify({'sentences': Update_Sentences , 'id': id}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			const {res} = await response.json();
+			console.log(res);
+			
+	}
+
 </script>
 
 <div>{TODAY_IS}</div>
@@ -214,11 +230,12 @@
 					<div>{@html sentence}</div>
 				{/each}
 			</div>
-			<div class="flex justify-between">
+			<!-- <div class="flex justify-between">
 				<button on:click={() => increasRepeatcount(collection.id, seven_days_collection)}>Ok</button
 				>
 				<div>{collection.countRepeat}/{collection.totalRepeat}</div>
-			</div>
+			</div> -->
+			<button on:click={() => save(collection.id)}>Save</button>
 		</div>
 	{/each}
 </div>

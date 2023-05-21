@@ -2,16 +2,12 @@ import { json } from '@sveltejs/kit';
 import * as database from '$lib/DB/database';
 
 export async function POST({ request, cookies }) {
-	database.pool.query('SELECT * FROM qwe', (err, result) => {
+	const { sentences, id } = await request.json();
+	database.pool.query('UPDATE week SET sentences=$1 WHERE day=$2',[sentences,id],(err, result) => {
 		if (err) {
-		  return console.error('Error executing query', err.stack)
+		console.error('Error executing query', err.stack)
 		}
-		console.log(result) // brianc
 	  })
 	  
-	  database.pool.end(() => {
-		console.log('pool has ended')
-	  })
-
-	return json({ id: 12 }, { status: 201 });
+	return json({res:'ok'});
 }

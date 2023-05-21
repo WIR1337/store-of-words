@@ -8,4 +8,5 @@
 3. Add unique ID to boxes [+]
 4. Create Basic template design [-]
 5. Configurate DB [+]
-6. Create Tables and charts
+6. Create Tables and charts [+]
+7. Save all sentence in db (create functions and logic)
